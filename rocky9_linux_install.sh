@@ -2,6 +2,8 @@
 # Rocky Linux 9 LXC Installer for Proxmox
 # https://github.com/kkgogogo17/proxmox_script.git
 
+set -e
+
 # shellcheck source=/dev/null
 source <(curl -fsSL https://raw.githubusercontent.com/tteck/Proxmox/main/misc/build.func)
 variables
@@ -21,7 +23,7 @@ read -p "RAM (MB) (default 2048): " input_ram
 var_disk="${input_disk:-32}"
 var_cpu="${input_cpu:-2}"
 var_ram="${input_ram:-2048}"
-var_net="virtio,bridge=vmbr0"
+var_net="name=eth0, bridge=vmbr0, ip=dhcp"
 
 msg_info "Downloading Rocky Linux 9 LXC Template"
 pveam update >/dev/null
@@ -48,5 +50,5 @@ pct exec $var_ctid -- dnf -y update >/dev/null
 msg_ok "System Updated"
 
 msg_ok "$APP LXC deployed successfully!"
-info "Default password: ${var_password}"
-info "To access: pct console $var_ctid"
+echo "Default password: ${var_password}"
+echo "To access: pct console $var_ctid"
