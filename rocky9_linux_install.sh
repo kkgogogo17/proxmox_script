@@ -37,7 +37,7 @@ pct create $var_ctid $var_template \
   -hostname $var_hostname \
   -password $var_password \
   -storage local-lvm \
-  -rootfs ${var_disk}G \
+  -rootfs ${var_disk} \
   -cores $var_cpu \
   -memory $var_ram \
   -net0 "$var_net" \
