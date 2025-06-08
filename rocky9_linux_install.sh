@@ -23,7 +23,7 @@ read -p "RAM (MB) (default 2048): " input_ram
 var_disk="${input_disk:-32}"
 var_cpu="${input_cpu:-2}"
 var_ram="${input_ram:-2048}"
-var_net="name=eth0, bridge=vmbr0, ip=dhcp"
+var_net="name=eth0,bridge=vmbr0"
 
 msg_info "Downloading Rocky Linux 9 LXC Template"
 pveam update >/dev/null
@@ -32,6 +32,17 @@ pveam download local $var_os >/dev/null || error_exit "Failed to download templa
 msg_ok "Template downloaded"
 
 msg_info "Creating LXC Container for $APP"
+echo pct create $var_ctid $var_template \
+  -hostname $var_hostname \
+  -password $var_password \
+  -storage local-lvm \
+  -rootfs ${var_disk}G \
+  -cores $var_cpu \
+  -memory $var_ram \
+  -net0 $var_net \
+  -features nesting=1 \
+  -unprivileged 1 \
+  -start 1
 pct create $var_ctid $var_template \
   -hostname $var_hostname \
   -password $var_password \
