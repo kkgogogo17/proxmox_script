@@ -32,17 +32,7 @@ pveam download local $var_os >/dev/null || error_exit "Failed to download templa
 msg_ok "Template downloaded"
 
 msg_info "Creating LXC Container for $APP"
-echo pct create $var_ctid $var_template \
-  -hostname $var_hostname \
-  -password $var_password \
-  -storage local-lvm \
-  -rootfs ${var_disk}G \
-  -cores $var_cpu \
-  -memory $var_ram \
-  -net0 $var_net \
-  -features nesting=1 \
-  -unprivileged 1 \
-  -start 1
+
 pct create $var_ctid $var_template \
   -hostname $var_hostname \
   -password $var_password \
@@ -50,7 +40,7 @@ pct create $var_ctid $var_template \
   -rootfs ${var_disk}G \
   -cores $var_cpu \
   -memory $var_ram \
-  -net0 $var_net \
+  -net0 "$var_net" \
   -features nesting=1 \
   -unprivileged 1 \
   -start 1 >/dev/null
